@@ -10,15 +10,15 @@
 
 ## Machine Virtuelle 
 
-[!image](vue-d-ensemble.png)
+![image](vue-d-ensemble.png)
 
 ## Configuration IP
 
-[!image](config-ip.png)
+![image](config-ip.png)
 
 ## Networking Ports
 
-[!image](network.png)
+![image](network.png)
 
 
 
