@@ -1,0 +1,63 @@
+version: "2"
+services:
+
+  frontend:
+    build: ./frontend
+    image: containerregistry8.azurecr.io/projet-docker-front
+    links:
+      - app
+    ports:
+      - "3001:8080"
+    networks:
+      - frontend
+      
+
+  app:
+    build: ./app
+    image: containerregistry8.azurecr.io/projet-docker-app
+    links:
+      - db
+    ports:
+      - "5000:5000"
+    networks:
+      - frontend
+      - backend
+
+  db:
+    image: containerregistry8.azurecr.io/mysql:5.7
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: newuser 
+      MYSQL_PASSWORD: newpassword
+    networks:
+      - backend
+    
+  tests:
+    build: ./app
+    image: containerregistry8.azurecr.io/projet-docker-tests
+    links:
+      - db
+    command: ["pytest","./app/tests/test.py"]
+    networks:
+      - backend
+
+  nginx:
+    build: ./nginx
+    container_name:  nginx
+    image: containerregistry8.azurecr.io/nginx
+    restart: always
+    # port allows the host machine to link to container
+    # pass 80 from host machine to 80 of the image filesystem
+    ports:
+        - "80:80"
+        - "443:443"
+    networks:
+      - frontend
+    
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
